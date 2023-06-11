@@ -1,0 +1,10 @@
+.Register { 
+    background: #F4F4F4; 
+    padding: 2rem 0; 
+}
+
+
+.Register .container .login-block { 
+    position: relative; 
+    left: 20%;    
+}

@@ -1,0 +1,11 @@
+.Login { 
+    background: #F4F4F4; 
+    padding: 2rem 0; 
+}
+
+
+.Login .container .login-block { 
+    position: relative; 
+    left: 20%; 
+    
+}
