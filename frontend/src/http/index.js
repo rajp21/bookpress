@@ -14,7 +14,7 @@ let api = axios.create({
 export const saveUser = (data) => api.post('/register', data); 
 export const loginUser = (data) => api.post('/login', data); 
 export const logout = () => api.post('/logout'); 
-
+export const loadAllProducts = () => api.get("products/all"); 
 
 
 api.interceptors.response.use(

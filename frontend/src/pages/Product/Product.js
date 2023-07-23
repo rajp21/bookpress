@@ -1,6 +1,21 @@
+import {useEffect,useState} from 'react'; 
+import { loadAllProducts } from '../../http';
+
+
 
 
 const Product = () => {
+
+    const [products, setProducts] = useState([]); 
+
+    useEffect(() => { 
+        async function featchProducts(){
+            let products = await loadAllProducts(); 
+            setProducts(products.data.data); 
+        }
+
+        featchProducts(); 
+    }, []); 
     return (
         <>
             <section class="header-banner bookpress-parallax" id="header-banner-id">
@@ -22,194 +37,27 @@ const Product = () => {
                         <div class="col-md-9">
                             <div class="row row-cols-2 row-cols-md-3 gx-4 gy-4">
 
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup1.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
+                                { 
+                                    products.map((book)  => (
+                                        <div class="col">
+                                            <div class="bg-white p-3 bordered-shadow">
+                                                <img src={book.cover_photo} alt="Product Image" class="img-fluid" />
+                                                <p class="py-2">personality, science</p>
+                                                <a href="product-single.html" class="text-decoration-none">
+                                                    <h3>{book.book_name}</h3>
+                                                </a>
+                                                <div class="d-flex justify-content-between pt-3">
+                                                    <h4 class="text-primary">75.00$</h4>
+                                                    <h5 class="text-decoration-line-through">55.00$</h5>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    ))
+                                }
 
 
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup2.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
 
-
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup3.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                {/* <!-- product 4 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup4.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 4 end--> */}
-
-                                {/* <!-- product 5 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup5.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 5 end--> */}
-
-                                {/* <!-- product 6 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup6.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 6 end--> */}
-
-                                {/* <!-- product 7 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup7.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 7 end--> */}
-
-                                {/* <!-- product 8 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup8.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 8 end--> */}
-
-                                {/* <!-- product 9 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup9.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 8 end--> */}
-
-                                {/* <!-- product 9 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup11.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 9 end--> */}
-
-                                {/* <!-- product 10 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup12.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                {/* <!-- product 11 end--> */}
-
-                                {/* <!-- product 12 --> */}
-                                <div class="col">
-                                    <div class="bg-white p-3 bordered-shadow">
-                                        <img src="assets/images/index2/book-mockup13.png" alt="Product Image" class="img-fluid" />
-                                        <p class="py-2">personality, science</p>
-                                        <a href="product-single.html" class="text-decoration-none">
-                                            <h3>No place to go except for up</h3>
-                                        </a>
-                                        <div class="d-flex justify-content-between pt-3">
-                                            <h4 class="text-primary">75.00$</h4>
-                                            <h5 class="text-decoration-line-through">55.00$</h5>
-                                        </div>
-                                    </div>
-                                    {/* </div><!-- product 12 end--> */}
-                                </div>
+                                
                             </div>
                         </div>
 
