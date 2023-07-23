@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import './login.css'; 
+import './login.css';
 import {useEffect, useState } from 'react';
 import { loginUser } from '../../http';
 import { setUser } from '../../store/userSlice';
@@ -15,21 +15,44 @@ const Login  = ()  => {
         password: ""
     }); 
 
+    
+    const [reqLoading, setReqLoading] = useState(false); 
+    const [reqSuccessful, setReqSuccessful] = useState(false); 
+    const [isErrorinRequest, setIsErorInRequest] = useState({
+        error: false, 
+        message: ""
+    });
+
     const navigate = useNavigate(); 
 
     const {email, password} = loginData; 
 
 
-    async function logUserIn(e, loginData){ 
-     
+     function logUserIn(e, loginData){ 
+        setIsErorInRequest({ 
+            error: false, 
+            message: ""
+        }); 
+        setReqLoading(true); 
         e.preventDefault(); 
-        try { 
-          const data = await loginUser(loginData); 
-          dispatch(setUser(data.data)); 
-           navigate('/'); 
-        }catch(e){ 
-             console.log(e); 
-        }
+        loginUser(loginData).then((data) => { 
+            
+           dispatch(setUser(data.data)); 
+           setReqLoading(false); 
+           setReqSuccessful(true); 
+
+           setTimeout(() => { 
+               navigate('/'); 
+           }, 3000); 
+        }).catch((e) => { 
+            setTimeout(() => { 
+                setReqLoading(false); 
+                setIsErorInRequest({
+                    error: true, 
+                    errorMessage: e.response.data.originalError || e.resopnse.data.message
+                }); 
+            }, 2000); 
+        }); 
     }
 
 
@@ -42,7 +65,28 @@ const Login  = ()  => {
                     onSubmit={e => logUserIn(e,loginData)}
                     >
                         <h3 className="fs-4 mb-3">Login To Access BookPress</h3>
-                        <h6 className="text-muted fw-normal mb-3">All fields are required*</h6>
+                        {
+                        reqLoading?<div class="alert alert-primary text-left" role="alert">
+                      <img style={{width: "20px", marginRight: ".5rem"}} src='https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif' className='mr-3'  alt="loader" />
+                      Please Wait
+                    </div>
+                        :""
+                    }
+                    {
+                        reqSuccessful?<div class="alert alert-success text-left" role="alert">
+                      <img style={{width: "20px", marginRight: ".5rem"}} src='https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif' className='mr-3'  alt="loader" />
+                      Redirecting
+                    </div>
+                        :""
+                    }
+
+
+                    {
+                        isErrorinRequest.error?<div class="alert alert-danger text-left" role="alert">
+                      {isErrorinRequest.errorMessage}
+                    </div>
+                        :""
+                    }
                         <div className="mb-3">
                             <input type="email" name="email" className="form-control" placeholder="Email address"
                                 aria-label="Email address"  

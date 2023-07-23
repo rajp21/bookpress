@@ -10,11 +10,11 @@ import Refresh from "../../models/refresh";
 
 const registerController =  { 
     async registerUser(req, res, next){ 
-        
         // validate the request
         const {error} = registerSchema.validate(req.body); 
 
         if(error){
+            console.log(error); 
             return next(error); 
         }
 
@@ -33,6 +33,7 @@ const registerController =  {
             }
 
         }catch(e){
+            console.log(e); 
             return next(e); 
         }
 

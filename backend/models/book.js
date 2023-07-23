@@ -1,3 +1,4 @@
+import { number } from 'joi';
 import mongoose from 'mongoose'; 
 
 const booksSchema = new mongoose.Schema({
@@ -25,6 +26,10 @@ const booksSchema = new mongoose.Schema({
         type: Number,
         required: true, 
     }, 
+    price: { 
+        type: Number, 
+        required: true
+    },
     genre: { 
         type: Array, 
         required: true, 

@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import Product from './pages/Product/Product';
+import ProductSingle from './pages/ProductSingle/ProductSingle';
 
 
 let persistor = persistStore(store);
@@ -46,7 +47,11 @@ function App() {
               <Route  path='/products'
                  element={<Product /> }
                />
-              </Routes>
+
+              <Route  path='/products/:productId'
+                 element={<ProductSingle /> }
+               />
+              </Routes>             
 
               
           </Router>

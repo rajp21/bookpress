@@ -14,5 +14,6 @@ router.get('/refresh', loginController.refresh);
 //   products 
 
 router.get('/products/all', productController.allProducts); 
+router.get('/products/get/:productId', productController.getProduct); 
 
 export default router; 

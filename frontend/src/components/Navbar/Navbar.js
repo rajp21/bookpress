@@ -1,12 +1,14 @@
 import { logout } from "../../http";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../../store/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 
 const Navbar = () => { 
     const navigate = useNavigate(); 
     const dispatch = useDispatch(); 
+
+    const selector = useSelector(state => console.log(state.cart)); 
 
     const logoutUser = async () => { 
         try { 
@@ -24,10 +26,10 @@ const Navbar = () => {
         <div class="container">
             <nav class="navbar navbar-expand-lg  py-3">
                 {/* <!--site logo --> */}
-                <a class="navbar-brand" href="index.html">
-                    <img class="logo-dark" src="assets/images/logo.png" alt="Site Logo" width="200" />
-                    <img class="logo-white" src="assets/images/logo.png" alt="Site Logo" width="200" />
-                </a>
+                <Link class="navbar-brand" to="/">
+                    <img class="logo-dark" src="/assets/images/logo.png" alt="Site Logo" width="200" />
+                    <img class="logo-white" src="/assets/images/logo.png" alt="Site Logo" width="200" />
+                </Link>
                 <button class="navbar-toggler me-3 ms-auto" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">

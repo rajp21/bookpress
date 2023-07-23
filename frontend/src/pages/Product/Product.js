@@ -1,17 +1,25 @@
 import {useEffect,useState} from 'react'; 
 import { loadAllProducts } from '../../http';
-
+import { Link } from 'react-router-dom';
 
 
 
 const Product = () => {
 
     const [products, setProducts] = useState([]); 
+    const [recentBooks, setRecentBooks] = useState([]); 
+    
 
     useEffect(() => { 
         async function featchProducts(){
-            let products = await loadAllProducts(); 
+            const currentURL = window.location.href;
+            const url = new URL(currentURL);
+            const page = url.searchParams.get('page');
+
+            
+            let products = await loadAllProducts({page: page}); 
             setProducts(products.data.data); 
+            setRecentBooks(products.data.recentBooks); 
         }
 
         featchProducts(); 
@@ -22,8 +30,8 @@ const Product = () => {
                 <div class="container d-flex justify-content-between align-items-center text-white">
                     <div class="overlay-out">
                         <h1 class="banner-title">Authors Books</h1>
-                        <p class="text-white"><a href="index.html" class="text-decoration-none text-white">Home</a> /
-                            <a href="products.html" class="text-decoration-none text-white">Products</a>
+                        <p class="text-white"><Link to="/" class="text-decoration-none text-white">Home</Link> /
+                            <Link to="/products" class="text-decoration-none text-white">Products</Link>
                         </p>
                     </div>
                     <img src="assets/images/banner-image.png" class="img-fluid" alt="Books" />
@@ -42,12 +50,12 @@ const Product = () => {
                                         <div class="col">
                                             <div class="bg-white p-3 bordered-shadow">
                                                 <img src={book.cover_photo} alt="Product Image" class="img-fluid" />
-                                                <p class="py-2">personality, science</p>
-                                                <a href="product-single.html" class="text-decoration-none">
+                                                <p class="py-2">{book.genre.join(',')}</p>
+                                                <Link to={`/products/${book._id}`} class="text-decoration-none">
                                                     <h3>{book.book_name}</h3>
-                                                </a>
+                                                </Link>
                                                 <div class="d-flex justify-content-between pt-3">
-                                                    <h4 class="text-primary">75.00$</h4>
+                                                    <h4 class="text-primary">{book.price}.00$</h4>
                                                     <h5 class="text-decoration-line-through">55.00$</h5>
                                                 </div>
                                             </div>
@@ -85,17 +93,23 @@ const Product = () => {
                             {/* <!-- recent posts --> */}
                             <div class="blog-posts">
                                 <h3 class="py-3 border-bottom">Our Recent Books</h3>
-                                <div class="d-flex responsive-wrap gap-3 border-bottom py-4">
-                                    <img src="assets/images/shop/recent-book-1.png" class="img-fluid" alt="Post Thumbnail" />
-                                    <div class="d-flex flex-column gap-2">
-                                        <a href="product-single.html">
-                                            <h6>Hans Christian Andersen</h6>
-                                        </a>
-                                        <span>$35.00</span>
-                                    </div>
-                                </div>
 
-                                <div class="d-flex responsive-wrap gap-3 border-bottom py-4">
+                                {
+                                    recentBooks.map((book) => (
+                                        <div class="d-flex responsive-wrap gap-3 border-bottom py-4">
+                                            <img src={book.cover_photo} style={{height: "200px", width: "150px"}}  class="img-fluid" alt="Post Thumbnail" />
+                                            <div class="d-flex flex-column gap-2">
+                                                <a href="product-single.html">
+                                                    <h6>Hans Christian Andersen</h6>
+                                                </a>
+                                                <span>$35.00</span>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                                
+
+                                {/* <div class="d-flex responsive-wrap gap-3 border-bottom py-4">
                                     <img src="assets/images/shop/recent-book-2.png" class="img-fluid" alt="Post Thumbnail" />
                                     <div class="d-flex flex-column gap-2">
                                         <a href="blog-single.html">
@@ -113,7 +127,7 @@ const Product = () => {
                                         </a>
                                         <span>$35.00</span>
                                     </div>
-                                </div>
+                                </div> */}
                             </div>
 
                             {/* <!-- post tags --> */}
