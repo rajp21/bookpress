@@ -2,7 +2,7 @@ import { original } from '@reduxjs/toolkit';
 import axios from 'axios'; 
 
 let api = axios.create({ 
-    baseURL: "http://localhost:5000/api", 
+    baseURL: "http://localhost:5000/api",
     withCredentials: true, 
     headers: { 
         'Content-Type': 'application/json', 
@@ -14,7 +14,7 @@ let api = axios.create({
 export const saveUser = (data) => api.post('/register', data); 
 export const loginUser = (data) => api.post('/login', data); 
 export const logout = () => api.post('/logout'); 
-export const loadAllProducts = (data) =>  api.get("/products/all", {page: 2});  
+export const loadAllProducts = (data) =>  api.get("/products/all",  data);  
 export const getSingleProduct = (productId) =>  api.get(`/products/get/${productId}`);  
 
 

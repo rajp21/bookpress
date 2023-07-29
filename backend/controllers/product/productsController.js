@@ -2,10 +2,10 @@ import Book from "../../models/book";
 
 const productController  = { 
     async allProducts(req, res, next) {
-        console.log(req.body); 
+        console.log("page number", req.body); 
         try{ 
             let perPage = 12 ;
-            let pageNum = req.params.page || 3; 
+            let pageNum = req.params.page || 1; 
             
             const books = await Book.find().sort({createdAt: -1}).skip(perPage*pageNum - perPage).limit(perPage); 
             const recentBooks = await Book.find().limit(3); 

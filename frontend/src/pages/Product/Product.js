@@ -8,7 +8,7 @@ const Product = () => {
 
     const [products, setProducts] = useState([]); 
     const [recentBooks, setRecentBooks] = useState([]); 
-    
+    const [isError, setIsError] = useState(false); 
 
     useEffect(() => { 
         async function featchProducts(){
@@ -16,10 +16,18 @@ const Product = () => {
             const url = new URL(currentURL);
             const page = url.searchParams.get('page');
 
+           
+            try{ 
+
+                let products = await loadAllProducts({page: page}); 
+                setProducts(products?.data?.data); 
+                setRecentBooks(products?.data?.recentBooks); 
+
+            }catch(e){
+                // alert('error You api giving error'); 
+                setIsError(true); 
+            }
             
-            let products = await loadAllProducts({page: page}); 
-            setProducts(products.data.data); 
-            setRecentBooks(products.data.recentBooks); 
         }
 
         featchProducts(); 
@@ -42,33 +50,48 @@ const Product = () => {
             <section id="section-blog" class="blog-section">
                 <div class="container">
                     <div class="row gx-5 gy-4">
-                        <div class="col-md-9">
-                            <div class="row row-cols-2 row-cols-md-3 gx-4 gy-4">
 
-                                { 
-                                    products.map((book)  => (
-                                        <div class="col">
-                                            <div class="bg-white p-3 bordered-shadow">
-                                                <img src={book.cover_photo} alt="Product Image" class="img-fluid" />
-                                                <p class="py-2">{book.genre.join(',')}</p>
-                                                <Link to={`/products/${book._id}`} class="text-decoration-none">
-                                                    <h3>{book.book_name}</h3>
-                                                </Link>
-                                                <div class="d-flex justify-content-between pt-3">
-                                                    <h4 class="text-primary">{book.price}.00$</h4>
-                                                    <h5 class="text-decoration-line-through">55.00$</h5>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))
-                                }
+                       {
+                         !isError?  <div class="col-md-9">
+                         {
+                             products?.length > 0?
+                             <div class="row row-cols-2 row-cols-md-3 gx-4 gy-4">
+
+                             { 
+                                 products.map((book)  => (
+                                     <div class="col">
+                                         <div class="bg-white p-3 bordered-shadow">
+                                             <img src={book.cover_photo} alt="Product Image" class="img-fluid" />
+                                             <p class="py-2">{book.genre.join(',')}</p>
+                                             <Link to={`/products/${book._id}`} class="text-decoration-none">
+                                                 <h3>{book.book_name}</h3>
+                                             </Link>
+                                             <div class="d-flex justify-content-between pt-3">
+                                                 <h4 class="text-primary">{book.price}.00$</h4>
+                                                 <h5 class="text-decoration-line-through">55.00$</h5>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 ))
+                             }
 
 
 
-                                
-                            </div>
+                             
+                         </div>: <h2>Sorry, No products are Available Currently</h2>
+                         }
+                     </div>: 
+                     
+                     <div class="col-md-9">
+                         <div class="alert alert-danger text-left" role="alert">
+                            Oops! Something Went wrong.
                         </div>
-
+                    </div>
+                        
+                       }
+                        
+                       
+                        
                         {/* <!-- sidebar start --> */}
                         <div class="col-md-3 d-flex flex-column gap-4 border rounded-2 p-4 sidebar" style={{ textAlign: 'left' }}>
                             {/* <!-- search box --> */}

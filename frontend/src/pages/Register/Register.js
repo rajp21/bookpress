@@ -27,6 +27,7 @@ const Register = () => {
     const navigate = useNavigate(); 
     const dispatch = useDispatch(); 
 
+
     const {fullName, email, phoneNo, password} = registerData; 
 
     // register user 
@@ -37,13 +38,15 @@ const Register = () => {
     }, ms));
     
     async function registerUser(e, registerData){ 
-
+     
         e.preventDefault();
         setReqLoading(true); 
 
 
         saveUser(registerData).then((user) => { 
-            dispatch(setUser(user.data)); 
+           
+
+            dispatch(setUser(user?.data)); 
             setReqLoading(false); 
             setReqSuccessful(true); 
             
@@ -53,34 +56,15 @@ const Register = () => {
             }, 3000); 
 
         }).catch((e) => { 
+            
             setReqLoading(false); 
             setIsErorInRequest({
                 error: true, 
-                errorMessage: e.response.data.originalError || e.resopnse.data.message
+                errorMessage: e?.response?.data?.originalError || e.resopnse?.data?.message || "Something Went Wrong"
             }); 
         }); 
 
-    //     try {   
-    //         let user = await saveUser(registerData); 
-    //         dispatch(setUser(user.data)); 
-    //         setReqLoading(false); 
-    //         setReqSuccessful(true); 
-            
-
-    //         await delay(6000);
-
-    //         navigate('/');               
-
-    //     }catch(e) { 
-            
-    //         setReqLoading(false); 
-    //         setIsErorInRequest({
-    //             error: true, 
-    //             errorMessage: e.response.data.originalError || e.resopnse.data.message
-    //         }); 
-
-    //         console.log(e); 
-    //     }
+   
     }
     
 
