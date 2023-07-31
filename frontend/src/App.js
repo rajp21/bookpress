@@ -4,6 +4,7 @@ import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Navbar from './components/Navbar/Navbar';
+import ScrollToTop from './components/Navbar/ScrollToTop';
 import { Provider } from 'react-redux';
 import store from './store/store'; 
 import { useSelector } from 'react-redux';
@@ -23,6 +24,7 @@ function App() {
       <PersistGate persistor={persistor}>
       <div className="App">
           <Router>
+              <ScrollToTop />
               <Navbar />
               <Routes>
                 <Route  path='/' element={

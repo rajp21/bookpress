@@ -1,7 +1,8 @@
 import {useEffect,useState} from 'react'; 
 import { loadAllProducts } from '../../http';
 import { Link } from 'react-router-dom';
-
+import { withRouter } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Product = () => {
@@ -10,12 +11,15 @@ const Product = () => {
     const [recentBooks, setRecentBooks] = useState([]); 
     const [isError, setIsError] = useState(false); 
     const [pagination, setPagination] = useState({});
+    const [currPage, setCurrPage] = useState(1); 
+
+    const navigate = useNavigate(); 
 
     useEffect(() => { 
         async function featchProducts(){
             const currentURL = window.location.href;
             const url = new URL(currentURL);
-            const page = url.searchParams.get('page');
+            const page = url.searchParams.get('page') || 1;
 
            
             try{ 
@@ -23,7 +27,6 @@ const Product = () => {
                 let products = await loadAllProducts(page); 
                 setProducts(products?.data?.data?.books); 
                 setRecentBooks(products?.data?.recentBooks); 
-                console.log(products?.data?.data?.pagination);
                 setPagination(products?.data?.data?.pagination);
 
             }catch(e){
@@ -34,7 +37,16 @@ const Product = () => {
         }
 
         featchProducts(); 
-    }, [pagination]); 
+    }, [currPage]); 
+
+
+
+    function loadPageData(page){ 
+        setCurrPage(page); 
+        navigate(`/products?page=${page}`); 
+        window.scrollTo(0, 0);
+    }
+
     return (
         <>
             <section class="header-banner bookpress-parallax" id="header-banner-id">
@@ -189,14 +201,9 @@ const Product = () => {
                                 
                                 new Array(pagination.totalPages).fill(0)
                                 .map((v, ind) => (
-                                    <li className={`${(ind + 1) == pagination.pageNum?'active': ''}`}><Link to={`?page=${ind+1}`}>{ ind + 1 }</Link></li>
+                                    <li onClick={e => loadPageData(ind+1)} className={`${(ind + 1) == pagination.pageNum?'active': ''}`}><Link>{ ind + 1 }</Link></li>
                                 ))
-                                
                             }
-                            {/* <li class="active"><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li> */}
                         </ul>
                     </div>
                 </div>
