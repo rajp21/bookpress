@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { getSingleProduct } from "../../http";
 import { addToCart } from "../../store/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { Notyf } from 'notyf';
 
 
 const ProductSingle = () => { 
@@ -10,6 +11,8 @@ const ProductSingle = () => {
     const [isReqLoading, setIsReqLoading] = useState(false); 
     const [counter, setCounter] = useState(1); 
     const {productId} = useParams(); 
+
+
 
     useEffect(() => { 
         function fetchProduct(){ 
@@ -40,8 +43,11 @@ const ProductSingle = () => {
 
     const dispatch = useDispatch(); 
 
+    const notyf = new Notyf();
+
     //  update cart
     function updateCart(bookId){
+        notyf.success('Item Added to Cart');
         dispatch(addToCart({bookId, quantity: counter})); 
     }
 

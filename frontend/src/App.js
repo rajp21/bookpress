@@ -14,6 +14,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Product from './pages/Product/Product';
 import ProductSingle from './pages/ProductSingle/ProductSingle';
 
+import 'notyf/notyf.min.css'; // for React, Vue and Svelte
+
+
+
 
 let persistor = persistStore(store);
 
