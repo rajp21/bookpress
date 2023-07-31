@@ -2,17 +2,25 @@ import Book from "../../models/book";
 
 const productController  = { 
     async allProducts(req, res, next) {
-        console.log("page number", req.body); 
+        
         try{ 
-            let perPage = 12 ;
+            let perPage = 1 ;
             let pageNum = req.params.page || 1; 
             
             const books = await Book.find().sort({createdAt: -1}).skip(perPage*pageNum - perPage).limit(perPage); 
             const recentBooks = await Book.find().limit(3); 
+
+            const totlaDocs = await Book.countDocuments(); 
             
             return res.status(200).json({
                 success: true, 
-                data: books, 
+                data: {
+                    books, 
+                    pagination: {
+                        pageNum, 
+                        totalPages: totlaDocs < perPage?1: Math.round(totlaDocs/perPage)
+                    },                   
+                }, 
                 recentBooks: recentBooks
             }); 
 

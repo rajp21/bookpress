@@ -9,6 +9,7 @@ const Product = () => {
     const [products, setProducts] = useState([]); 
     const [recentBooks, setRecentBooks] = useState([]); 
     const [isError, setIsError] = useState(false); 
+    const [pagination, setPagination] = useState({});
 
     useEffect(() => { 
         async function featchProducts(){
@@ -19,9 +20,11 @@ const Product = () => {
            
             try{ 
 
-                let products = await loadAllProducts({page: page}); 
-                setProducts(products?.data?.data); 
+                let products = await loadAllProducts(page); 
+                setProducts(products?.data?.data?.books); 
                 setRecentBooks(products?.data?.recentBooks); 
+                console.log(products?.data?.data?.pagination);
+                setPagination(products?.data?.data?.pagination);
 
             }catch(e){
                 // alert('error You api giving error'); 
@@ -31,7 +34,7 @@ const Product = () => {
         }
 
         featchProducts(); 
-    }, []); 
+    }, [pagination]); 
     return (
         <>
             <section class="header-banner bookpress-parallax" id="header-banner-id">
@@ -182,11 +185,18 @@ const Product = () => {
                     </div>
                     <div class="pagination-wrap my-7">
                         <ul class="d-flex justify-content-start align-items-center gap-3 ps-0">
-                            <li><a href="#">1</a></li>
-                            <li class="active"><a href="#">2</a></li>
+                            {
+                                
+                                new Array(pagination.totalPages).fill(0)
+                                .map((v, ind) => (
+                                    <li className={`${(ind + 1) == pagination.pageNum?'active': ''}`}><Link to={`?page=${ind+1}`}>{ ind + 1 }</Link></li>
+                                ))
+                                
+                            }
+                            {/* <li class="active"><a href="#">2</a></li>
                             <li><a href="#">3</a></li>
                             <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
+                            <li><a href="#">5</a></li> */}
                         </ul>
                     </div>
                 </div>
