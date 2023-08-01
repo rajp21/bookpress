@@ -46,9 +46,9 @@ const ProductSingle = () => {
     const notyf = new Notyf();
 
     //  update cart
-    function updateCart(bookId){
+    function updateCart(selectedBook){
         notyf.success('Item Added to Cart');
-        dispatch(addToCart({bookId, quantity: counter})); 
+        dispatch(addToCart({book:selectedBook, quantity: counter})); 
     }
 
     
@@ -167,7 +167,7 @@ const ProductSingle = () => {
                         <div class="d-flex gap-4 align-items-center py-30 border-bottom">
                             <a class="btn btn-dark"><i class="fa-solid fa-plus" onClick={e => inc(counter)}></i> {counter} <i
                                     class="fa-solid fa-minus" onClick={e => dec(counter)}></i></a>
-                            <a  class="btn btn-primary" onClick={e => updateCart(book._id)}>Add To Cart</a>
+                            <a  class="btn btn-primary" onClick={e => updateCart(book)}>Add To Cart</a>
                         </div>
 
                         {/* <!-- product categories --> */}

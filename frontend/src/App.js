@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
+import Cart from './pages/Cart/Cart';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Navbar from './components/Navbar/Navbar';
@@ -57,7 +58,14 @@ function App() {
               <Route  path='/products/:productId'
                  element={<ProductSingle /> }
                />
-              </Routes>             
+
+                <Route  path='/cart'
+                 element={<Cart /> }
+               />
+              </Routes>  
+
+
+
 
               
           </Router>

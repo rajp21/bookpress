@@ -2,13 +2,17 @@ import { logout } from "../../http";
 import { Link, useNavigate } from "react-router-dom";
 import { clearUser } from "../../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import {useState} from 'react'; 
 
 const Navbar = () => { 
     const navigate = useNavigate(); 
     const dispatch = useDispatch(); 
+    
+   
 
-    const selector = useSelector(state => console.log(state.cart)); 
+    const crt = useSelector((state) => state.cart); 
+    
+   
 
     const logoutUser = async () => { 
         try { 
@@ -19,6 +23,8 @@ const Navbar = () => {
            console.log(e); 
         }
     }
+
+
 
 
     return (
@@ -60,8 +66,21 @@ const Navbar = () => {
 
 
                     {/* <!-- Offcanvas --> */}
-                    <a class="bi bi-cart fs-4 pe-30" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
-                        aria-controls="offcanvasCart" href="#"></a>
+                    <div style={{position: "relative"}}>
+                    <Link class="bi bi-cart fs-4 pe-30" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart"
+                        aria-controls="offcanvasCart" to="/cart"></Link>
+
+                        <span style={{
+                            position: "absolute", 
+                            right: "40%", 
+                            width: "20px", 
+                            height: "20px",
+                            background: "red", 
+                            borderRadius: "50%", 
+                            fontSize: "12px"
+                        }}>{crt.totalQty}</span>
+
+                    </div>
 
                     <a class="bi bi-search fs-4 pe-35" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSearch"
                         aria-controls="offcanvasSearch" href="#"></a>
