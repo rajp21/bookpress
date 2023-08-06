@@ -1,14 +1,34 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getSingleProduct } from "../../http";
 import { addToCart } from "../../store/cartSlice";
 import { useSelector } from "react-redux";
 
 
 
+
 const Cart = () => { 
 
+    const user = useSelector((state) => state.user); 
+    const navigate = useNavigate(); 
+    
+
+    function checkAuth () {
+      console.log(user.isLoggedIn);
+      return user.isLoggedIn; 
+    }
+
     const cartItems = useSelector((state) => state.cart); 
+
+
+    // proceed to checkout 
+    function proceedToCheckout(loginStatus){ 
+        if(loginStatus){ 
+
+        }else{ 
+          navigate('/login'); 
+        }
+    }
     
     
    return( 
@@ -42,8 +62,8 @@ const Cart = () => {
             <div class="row">
 
               <div class="col-lg-7">
-                <h5 class="mb-3"><a href="#!" class="text-body"><i
-                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                <h5 class="mb-3"><Link to="/products" class="text-body"><i
+                      class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</Link></h5>
                 <hr />
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -86,115 +106,7 @@ const Cart = () => {
                         </div>
                       </div>
                     ))
-                }
-
-                {/* <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img1.webp"
-                            class="img-fluid rounded-3" alt="Shopping item" style={{width: "65px"}} />
-                        </div>
-                        <div class="ms-3">
-                          <h5>Iphone 11 pro</h5>
-                          <p class="small mb-0">256GB, Navy Blue</p>
-                        </div>
-                      </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style={{width: "50px"}}>
-                          <h5 class="fw-normal mb-0">2</h5>
-                        </div>
-                        <div style={{width: "80px"}}>
-                          <h5 class="mb-0">$900</h5>
-                        </div>
-                        <a href="#!" style={{color: "#cecece"}}><i class="fas fa-trash-alt"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img2.webp"
-                            class="img-fluid rounded-3" alt="Shopping item" style={{width: "65px"}} />
-                        </div>
-                        <div class="ms-3">
-                          <h5>Samsung galaxy Note 10 </h5>
-                          <p class="small mb-0">256GB, Navy Blue</p>
-                        </div>
-                      </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style={{width: "50px"}}>
-                          <h5 class="fw-normal mb-0">2</h5>
-                        </div>
-                        <div style={{width: "80px"}}>
-                          <h5 class="mb-0">$900</h5>
-                        </div>
-                        <a href="#!" style={{color: "#cecece"}}><i class="fas fa-trash-alt"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card mb-3">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img3.webp"
-                            class="img-fluid rounded-3" alt="Shopping item" style={{width: "65px"}} />
-                        </div>
-                        <div class="ms-3">
-                          <h5>Canon EOS M50</h5>
-                          <p class="small mb-0">Onyx Black</p>
-                        </div>
-                      </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style={{width: "50px"}}>
-                          <h5 class="fw-normal mb-0">1</h5>
-                        </div>
-                        <div style={{width: "80px"}}>
-                          <h5 class="mb-0">$1199</h5>
-                        </div>
-                        <a href="#!" style={{color: "#cecece"}}><i class="fas fa-trash-alt"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="card mb-3 mb-lg-0">
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <div class="d-flex flex-row align-items-center">
-                        <div>
-                          <img
-                            src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-shopping-carts/img4.webp"
-                            class="img-fluid rounded-3" alt="Shopping item" style={{width: "65px"}} />
-                        </div>
-                        <div class="ms-3">
-                          <h5>MacBook Pro</h5>
-                          <p class="small mb-0">1TB, Graphite</p>
-                        </div>
-                      </div>
-                      <div class="d-flex flex-row align-items-center">
-                        <div style={{width: "50px"}}>
-                          <h5 class="fw-normal mb-0">1</h5>
-                        </div>
-                        <div style={{width: "80px"}}>
-                          <h5 class="mb-0">$1799</h5>
-                        </div>
-                        <a href="#!" style={{color: "#cecece"}}><i class="fas fa-trash-alt"></i></a>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
+                }              
 
               </div>
               <div class="col-lg-5">
@@ -207,7 +119,6 @@ const Cart = () => {
                         class="img-fluid rounded-3" style={{width: "45px"}} alt="Avatar" />
                     </div>
 
-                  
 
                     <hr class="my-4" />
 
@@ -226,13 +137,24 @@ const Cart = () => {
                       <p class="mb-2">${Number(cartItems.totalPrice) + 50}</p>
                     </div>
 
-                    <button type="button" class="btn btn-info btn-block btn-lg">
-                      <div class="d-flex justify-content-between">
-                        <span>${Number(cartItems.totalPrice) + 50}</span>  |  
-                        <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
-                      </div>
-                    </button>
+                      { 
+                          checkAuth()? 
+                          
+                          <button type="button" class="btn btn-info btn-block btn-lg" onClick={e => proceedToCheckout(true)}>
+                            <div class="d-flex justify-content-between">
+                              <span>${Number(cartItems.totalPrice) + 50}</span>  &nbsp;  |  &nbsp;  
+                              <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                            </div>
+                          </button>
+                          :  <button type="button" class="btn btn-info btn-block btn-lg" onClick={e => proceedToCheckout(false)}>
+                          <div class="d-flex justify-content-between">
+                            <span>${Number(cartItems.totalPrice) + 50}</span>  &nbsp;  |  &nbsp; 
+                            <span>Login to Checkout<i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                          </div>
+                        </button>
 
+                      }
+                   
                   </div>
                 </div>
 

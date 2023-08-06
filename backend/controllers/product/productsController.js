@@ -4,7 +4,7 @@ const productController  = {
     async allProducts(req, res, next) {
         
         try{ 
-            let perPage = 1 ;
+            let perPage = 10;
             let pageNum = req.params.page || 1; 
             
             const books = await Book.find().sort({createdAt: -1}).skip(perPage*pageNum - perPage).limit(perPage); 
