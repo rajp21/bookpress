@@ -2,8 +2,9 @@ import JwtService from "../services/JwtServices";
 
 const auth = async (req,res,next)  => { 
     const {accessToken} = req.cookies; 
+
+    console.log(accessToken); 
     try { 
-        console.log(accessToken); 
         let data = await JwtService.verify(accessToken); 
         req.user = data; 
         next(); 

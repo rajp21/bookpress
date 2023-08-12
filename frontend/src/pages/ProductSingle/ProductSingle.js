@@ -5,6 +5,7 @@ import { addToCart } from "../../store/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Notyf } from 'notyf';
 
+import {notyf} from '../../config/index'; 
 
 const ProductSingle = () => { 
     const [book, setBook] = useState({});
@@ -43,7 +44,7 @@ const ProductSingle = () => {
 
     const dispatch = useDispatch(); 
 
-    const notyf = new Notyf();
+    // const notyf = new Notyf();
 
     //  update cart
     function updateCart(selectedBook){

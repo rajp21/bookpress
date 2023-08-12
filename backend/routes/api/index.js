@@ -1,5 +1,5 @@
 import express from 'express'; 
-import { loginController, productController, registerController } from '../../controllers';
+import { loginController, productController, registerController, orderController } from '../../controllers';
 import auth from '../../middlewares/auth';
 
 
@@ -15,5 +15,9 @@ router.get('/refresh', loginController.refresh);
 
 router.get('/products/all/:page', productController.allProducts); 
 router.get('/products/get/:productId', productController.getProduct); 
+
+// orders 
+
+router.post('/order/create-order', auth, orderController.initiateOrder); 
 
 export default router; 

@@ -37,7 +37,7 @@ const Login  = ()  => {
         e.preventDefault(); 
         loginUser(loginData).then((data) => { 
             
-           dispatch(setUser(data.data)); 
+           dispatch(setUser(data?.data)); 
            setReqLoading(false); 
            setReqSuccessful(true); 
 
@@ -45,13 +45,14 @@ const Login  = ()  => {
                navigate('/'); 
            }, 3000); 
         }).catch((e) => { 
+            console.log(e.response.data); 
             setTimeout(() => { 
                 setReqLoading(false); 
                 setIsErorInRequest({
                     error: true, 
-                    errorMessage: e.response.data.originalError || e.resopnse.data.message
+                    errorMessage: e?.response?.data?.originalError || e?.response?.data?.message
                 }); 
-            }, 2000); 
+            }, 1000); 
         }); 
     }
 

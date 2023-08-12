@@ -33,7 +33,7 @@ const loginController = {
         }   
 
         let match = await bcrypt.compare(password, user.password); 
-        console.log(user); 
+        
 
         if(!match){ 
             return next(CustomErrorHandler.passwordNotMatched("Password Didn't matched")); 
@@ -81,8 +81,17 @@ const loginController = {
     }, 
 
     async refresh(req, res, next) { 
+
+        
         const {refreshToken} = req.cookies; 
+
+
+        console.log("*******************************************")
+        console.log(req.cookies); 
+
          
+
+
         // check if token is valid or not
         let userData; 
         try { 
@@ -94,11 +103,14 @@ const loginController = {
 
         // check if token is in db or not
         try {
-           let valid = await Refresh.findOne({userId: userData._id, token: refreshToken}); 
-           if(!valid) { 
-            console.log('while checking in db');  
+        
+           let valid = await Refresh.findOne({userId: userData._id, token: req.cookies.refreshToken}); 
 
-             return next(CustomErrorHandler.invalidToken("Inalid Token")); 
+         
+
+
+           if(!valid) { 
+            return next(CustomErrorHandler.invalidToken("Inalid Token")); 
            }
         }catch(e) {
             return next(e); 
@@ -125,7 +137,7 @@ const loginController = {
 
          // update the refresh Toekn in db
          try {
-            await Refresh.updateOne({_id: userData._id}, {token: newRefreshToken}); 
+            await Refresh.updateOne({userId: userData._id}, {token: newRefreshToken}); 
          }catch(e){ 
             return next(e); 
          }

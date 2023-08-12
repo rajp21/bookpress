@@ -14,6 +14,7 @@ import { persistStore } from 'redux-persist';
 import { PersistGate } from 'redux-persist/integration/react';
 import Product from './pages/Product/Product';
 import ProductSingle from './pages/ProductSingle/ProductSingle';
+import Checkout from './pages/Checkout/Checkout'; 
 
 import 'notyf/notyf.min.css'; // for React, Vue and Svelte
 
@@ -62,7 +63,17 @@ function App() {
                 <Route  path='/cart'
                  element={<Cart /> }
                />
+
+
+              <Route  path='/order-checkout/:orderId' element={
+                  <ProtectedRoute>
+                      <Checkout />
+                  </ProtectedRoute>                
+                } />
+
+
               </Routes>  
+
 
 
 

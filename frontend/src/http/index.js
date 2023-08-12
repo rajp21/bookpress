@@ -16,6 +16,10 @@ export const loginUser = (data) => api.post('/login', data);
 export const logout = () => api.post('/logout'); 
 export const loadAllProducts = (page) =>  api.get(`/products/all/${page}`);  
 export const getSingleProduct = (productId) =>  api.get(`/products/get/${productId}`);  
+export const createOrder = (data) =>  api.post(`/order/create-order`, data);  
+
+
+
 
 
 
