@@ -6,7 +6,8 @@ import { useSelector } from "react-redux";
 import { deleteFromCart } from "../../store/cartSlice";
 import { notyf } from "../../config";
 import { useDispatch } from "react-redux";
-import { createOrder } from "../../http";
+import { createOrder, createRazorPayOrder } from "../../http";
+
 
 const Cart = () => {
 
@@ -22,20 +23,82 @@ const Cart = () => {
   const cartItems = useSelector((state) => state.cart);
 
 
+
+  function loadScript(src) {
+    return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.onload = () => {
+            resolve(true);
+        };
+        script.onerror = () => {
+            resolve(false);
+        };
+        document.body.appendChild(script);
+    });
+}
+
+
   // proceed to checkout 
   async function proceedToCheckout(loginStatus) {
     if (loginStatus) {
       try {
-        await createOrder({
+        const orderData = await createOrder({
           cart: cartItems,
           payment: {
             amount: cartItems.totalPrice + 50,
             payment_mode: "online",
             payment_gateway: "r_pay",
           }
-        });
+        }); 
 
+        navigate(`/order-checkout/${orderData?.data?.data?._id}`)
 
+        //  create razor pay order now
+      //   let razorPayOrderData; 
+      //   try{  
+      //     razorPayOrderData = await createRazorPayOrder({orderId: orderData?.data?.data?._id})
+      //   }catch(e){ 
+      //     notyf.error("Something went Wrong"); 
+      //   }
+
+      //   let rPayOrderInfo = razorPayOrderData?.data?.data; 
+        
+        
+
+      //   const res = await loadScript(
+      //     "https://checkout.razorpay.com/v1/checkout.js"
+      // );
+
+      //   const options = { 
+      //     key: process.env.REACT_APP_RAZOR_PAY_API_KEY, // Enter the Key ID generated from the Dashboard
+      //     amount: rPayOrderInfo.amount.toString(),
+      //     currency: rPayOrderInfo.currency,
+      //     name: "BookPress.",
+      //     description: "Order Place BookPress",
+          
+      //     order_id: rPayOrderInfo.id,
+      //     handler: async function (response) {
+      //         const data = {
+      //             orderCreationId: rPayOrderInfo.id,
+      //             razorpayPaymentId: response.razorpay_payment_id,
+      //             razorpayOrderId: response.razorpay_order_id,
+      //             razorpaySignature: response.razorpay_signature,
+      //         };
+
+              
+
+      //         notyf.success("Payment successfull")
+      //     },
+          
+      //     theme: {
+      //         color: "#61dafb",
+      //     },
+      //   }
+
+      //   const paymentObject = new window.Razorpay(options);
+      //   paymentObject.open();
+        
         
       } catch (e) {
         console.log(e); 

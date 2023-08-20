@@ -19,8 +19,8 @@ export const getSingleProduct = (productId) =>  api.get(`/products/get/${product
 export const createOrder = (data) =>  api.post(`/order/create-order`, data);  
 
 
-
-
+//  razor pay
+export const createRazorPayOrder = data =>  api.post('/payment/r-pay/create-order', data);
 
 
 api.interceptors.response.use(

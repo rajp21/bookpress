@@ -9,7 +9,9 @@ export const {
         DATABASE_URL, 
         ACCESS_SECRET, 
         REFRESH_SECRET, 
-        FRONT_END_URL
+        FRONT_END_URL, 
+        RAZOR_PAY_API_KEY, 
+        RAZOR_PAY_KEY_SECRET
 } = process.env; 
 
 

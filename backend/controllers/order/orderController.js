@@ -60,7 +60,7 @@ const orderController = {
                 data: order
             })
         }).catch((e) => { 
-            console.log('error is here'); 
+            
             return next(e); 
         })
     }
