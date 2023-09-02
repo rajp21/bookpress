@@ -17,7 +17,8 @@ export const logout = () => api.post('/logout');
 export const loadAllProducts = (page) =>  api.get(`/products/all/${page}`);  
 export const getSingleProduct = (productId) =>  api.get(`/products/get/${productId}`);  
 export const createOrder = (data) =>  api.post(`/order/create-order`, data);  
-
+export const fetchUserAddresses = () => api.get('/user/get-addresses');
+export const addNewAddress = (data) => api.post(`user/add-addrses`, data); 
 
 //  razor pay
 export const createRazorPayOrder = data =>  api.post('/payment/r-pay/create-order', data);

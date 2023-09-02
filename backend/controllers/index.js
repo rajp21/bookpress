@@ -15,3 +15,7 @@ export { default as orderController} from './order/orderController';
 // payments 
 
 export {default as razorPayController} from './payment/razorPayController'; 
+
+//user
+
+export {default as userController} from './user/userController'; 

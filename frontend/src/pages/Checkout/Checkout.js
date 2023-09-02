@@ -1,6 +1,63 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
+import { addNewAddress, fetchUserAddresses } from '../../http';
+import './checkout.css'; 
 
 const Checkout = () => {
+    const [addressLilst, setAddressList] = useState([]); 
+    const [addAddress, setAdAddress] = useState(false); 
+    const [isError, setIsError] = useState(false); 
+    const [errorMessages, setErrorMessages] = useState({}); 
+
+    const [addressData, setAddressData]  = useState({
+        recidence: "", 
+        landmark: "", 
+        city: "", 
+        state: "", 
+        pincode: ""
+    })
+
+
+
+
+    // destructuring the addressData
+    const {recidence, landmark, city, state, pincode} = addressData; 
+
+
+    // on change input 
+    const onInpChange = (e) => { 
+        setAddressData({...addressData, [e.target.name]: e.target.value}); 
+    }
+
+
+    useEffect(() => { 
+        // loadAddresses
+        async function loadAddresses(){ 
+            try{ 
+                let addresses = await fetchUserAddresses();                 
+                console.log(addresses.data.addresses); 
+                setAddressList(addresses.data.addresses); 
+                setIsError(false); 
+            }catch(e){ 
+                setIsError(true); 
+            }   
+        }
+
+        loadAddresses(); 
+    }, []); 
+
+
+
+    //  submit new address
+    async function submitAddress(e, addressData){
+        e.preventDefault(); 
+        try{ 
+            await addNewAddress(addressData); 
+        }catch(e){ 
+            setErrorMessages(e.response.data.errorMessages);
+        }
+    }
+
+
   return (
     <>
       {/* <!-- header banner --> */}
@@ -18,172 +75,119 @@ const Checkout = () => {
     </section> 
     {/* <!-- header banner end --> */}
 
-    {/* <!-- billing section  --> */}
+    { 
+        isError? 
+        <div className='col-md-9 mt-5' >
+            <div class="alert alert-danger text-left" role="alert">
+                Oops! Something Went wrong.
+            </div>
+        </div>
+        : 
+
+        <>
+         {/* <!-- billing section  --> */}
     <section class="billing-section py-5">
         <div class="container">
-            <form class="mt-5">
-                <div class="row row-cols-1 row-cols-md-2 contact g-5 mx-2 px-3 py-2">
-                    <div class="col">
-                        <h3>Billign Address</h3>
-                        <div class="mb-3 pt-3">
-                            <label for="InputText1" class="form-label">
-                                Full Name
-                            </label>
-                            <input type="text" class="form-control" id="InputText1" placeholder="Enter your name" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="InputEmail" class="form-label">
-                                Email Address
-                            </label> 
-                            <input type="email" class="form-control" id="InputEmail" placeholder="Enter your email" />
-                        </div>
-                        <div class="row row-cols-1 row-cols-md-2 py-2">
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="InputText2" class="form-label">
-                                        Country
-                                    </label>
-                                    <input type="text" class="form-control" id="InputText2"
-                                        placeholder="Enter your country" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="InputText3" class="form-label">
-                                        Phone Number
-                                    </label>
-                                    <input type="text" class="form-control" id="InputText3"
-                                        placeholder="Enter your number" />
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label for="InputText4" class="form-label">
-                                        Country
-                                    </label>
-                                    <input type="text" class="form-control" id="InputText4"
-                                        placeholder="Enter your country" />
-                                </div>
-                                <div class="mb-3">
-                                    <label for="InputText5" class="form-label">
-                                        Zip Code
-                                    </label>
-                                    <input type="text" class="form-control" id="InputText5"
-                                        placeholder="Enter your zip code" />
-                                </div>
+            <div className='address-area'>
+                <h4 className="section-title">Select Addresses</h4>
+
+                <div className='address-wrapper'>
+                    { 
+                        addressLilst.length >0? 
+                        addressLilst.map(() => (
+                            <div className='single-address'>
+                        <input type='checkbox'   />
+
+                        <div className='address-line'>
+                                <p>Tactus Ventures, Plot No 28, Marol Coperative industrial Eastate Gamdevi, Marol, Andheri East, Mumbai, Maharashtra, 400027</p>
                             </div>
                         </div>
-                        <h3>Additional Information</h3>
-                        <label for="message" class="form-label"></label>
-                        <textarea id="message" class="form-control" name="story" placeholder="Enter your message"
-                            rows="8" cols="30"></textarea>
-
-                        <div class="my-5">
-                            <h5 class="text-primary">* Have confidence. We won't spam at your inbox.</h5>
-                        </div>
-                    </div>
-
-                    <div class="col">
-                        <h3>Your Order</h3>
-
-                        <table class="table-billing bg-white my-4">
-                            <thead>
-                                <tr class="border-bottom">
-                                    <th class="text-start">
-                                        Product
-                                    </th>
-                                    <th class="text-end">
-                                        Total
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="text-start fw-lighter">Hate Glitterign Stars</td>
-                                    <td class="text-end fw-lighter">$56.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start fw-lighter">Where the Crawdads Sing</td>
-                                    <td class="text-end fw-lighter"> $76.00</td>
-                                </tr>
-                                <tr class="border-top">
-                                    <td class="text-start fw-lighter">Sub Total</td>
-                                    <td class="text-end fw-lighter">$132.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="text-start fw-lighter">Shipping</td>
-                                    <td class="text-end fw-lighter">Free Shipping</td>
-                                </tr>
-                                <tr class="border-top">
-                                    <td class="text-start fs-5">
-                                        Total
-                                    </td>
-                                    <td class="text-end fs-5">
-                                        $132.00
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-
-                        <h3>Payment Method</h3>
-                        <div class="row payment-method px-3 py-4 my-4 mx-1">
-                            <div class="col-md-6">
-                                <div class="form-check p-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" />
-                                    <label class="form-check-label" for="flexCheckDefault1">
-                                        Direct Bank Transfer
-                                    </label>
-                                </div>
-                                <div class="form-check p-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2" />
-                                    <label class="form-check-label" for="flexCheckDefault2">
-                                        Paypal
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-check p-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3" />
-                                    <label class="form-check-label" for="flexCheckDefault3">
-                                        Cash on delivery
-                                    </label>
-                                </div>
-                                <div class="form-check p-2">
-                                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4" /> 
-                                    <label class="form-check-label" for="flexCheckDefault4">
-                                        Payonee
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row row-cols-1 row-cols-md-5 border-top gx-0 pt-4">
-                                <div class="col">
-                                    <img src="assets/images/checkout/payment-method-1.png" alt="Payment Img1"
-                                        class="img-fluid pe-2" />
-                                </div>
-                                <div class="col">
-                                    <img src="assets/images/checkout/payment-method-2.png" alt="Payment Img2"
-                                        class="img-fluid pe-2" />
-                                </div>
-                                <div class="col">
-                                    <img src="assets/images/checkout/payment-method-3.png" alt="Payment Img3"
-                                        class="img-fluid pe-2" />
-                                </div>
-                                <div class="col">
-                                    <img src="assets/images/checkout/payment-method-4.png" alt="Payment Img4"
-                                        class="img-fluid pe-2" />
-                                </div>
-                                <div class="col">
-                                    <img src="assets/images/checkout/payment-method-5.png" alt="Payment Img5"
-                                        class="img-fluid pe-2" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="">
-                            <button type="submit" class="btn btn-primary">Place Order</button>
-                        </div>
-                    </div>
+                        )): <h4  className='error-message'>Oops, No Address Added, You need to add Adress First</h4>
+                    }                   
                 </div>
-            </form>
+
+                <div className='add-address'>
+                    <h4>Add Address</h4>
+                    <buton onClick={e => setAdAddress((prev)=> !prev)} className="btn btn-danger"> Add</buton>
+                </div>
+
+
+              { 
+                addAddress?
+                <div className='add-address-form mt-4'>
+                   <form onSubmit={e => submitAddress(e, addressData)}>
+                        <div className='row'>
+                            <div className='col-md-6 mt-3'>
+                                    <label>Room No / Appartment / Plot number</label>
+                                    <input className='w-100' 
+                                    placeholder='recidence' 
+                                    name='recidence'
+                                    value={recidence}
+                                    onChange={e => onInpChange(e)}
+
+                                    />
+                                    {
+                                        errorMessages.recidence?<span className='err-message'>Something is wrong</span>:''
+                                    }
+                                </div>
+
+                                <div className='col-md-6 mt-3'>
+                                    <lable>Landmark / Village</lable>
+                                    <input className='w-100' 
+                                    placeholder='Landmark / Villabe' 
+                                    name='landmark'
+                                    value={landmark}
+                                    onChange={e => onInpChange(e)}
+
+                                    />
+
+{
+                                        errorMessages?.landmark?<span>Something wrong wrong</span>: ""
+                                    }
+                                </div>
+
+
+                                <div className='col-md-6 mt-3'>
+                                    <label>City</label>
+                                    <input className='w-100' placeholder='city' 
+                                        name='city'
+                                        value={city}
+                                        onChange={e => onInpChange(e)}
+                                    />
+                                </div>
+
+                            <div className='col-md-6 mt-3'>
+                                <label>State</label>
+                                <input className='w-100' 
+                                placeholder='state'
+                                name='state'
+                                value={state}
+                                    onChange={e => onInpChange(e)}
+
+                                />
+                            </div>
+
+
+                            
+                            <div className='col-md-6 mt-3'>
+                                <label>Pincode</label>
+                                <input className='w-100' placeholder='pincode' name='pincode'
+                                value={pincode}
+                                    onChange={e => onInpChange(e)}
+                                 />
+                            </div>
+                        </div>
+
+                        <div className='text-center'>
+                            <button type='submit' className='btn btn-primary mt-4 text-center'>Add Address</button>
+                        </div>
+                   </form>
+                </div>: 
+
+                ""
+              }
+
+            </div>
         </div>
     </section>
     {/* <!-- End billing section  --> */}
@@ -207,6 +211,8 @@ const Checkout = () => {
             </div>
         </div>
     </section>
+        </>
+    }
     </>
   )
 }

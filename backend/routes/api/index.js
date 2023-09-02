@@ -1,5 +1,5 @@
 import express from 'express'; 
-import { loginController, productController, registerController, orderController, razorPayController } from '../../controllers';
+import { loginController, productController, registerController, orderController, razorPayController, userController } from '../../controllers';
 import auth from '../../middlewares/auth';
 
 
@@ -11,6 +11,12 @@ router.post('/register', registerController.registerUser);
 router.post('/login', loginController.login); 
 router.post('/logout', auth , loginController.logout); 
 router.get('/refresh', loginController.refresh); 
+
+
+// user
+
+router.get('/user/get-addresses', auth, userController.getAllAddresses);  
+router.post('/user/add-addrses', auth, userController.addAddress); 
 
 //   products 
 

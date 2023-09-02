@@ -16,7 +16,6 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   function checkAuth() {
-    console.log(user.isLoggedIn);
     return user.isLoggedIn;
   }
 
