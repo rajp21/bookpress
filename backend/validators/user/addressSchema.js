@@ -1,7 +1,7 @@
 import Joi from 'joi';
 
 const addressSchema = Joi.object({
-  residence: Joi.string()
+  recidence: Joi.string()
     .required()
     .messages({
       'base': 'Residence should be a string or a number',

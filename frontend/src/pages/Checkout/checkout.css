@@ -1,6 +1,5 @@
 .address-area h4.section-title{ 
     text-align: left;
-    margin-bottom: 2rem; 
 }
 
 .address-wrapper{ 
@@ -77,4 +76,63 @@
 
 .err-message{ 
     color: red; 
+}
+
+
+
+/* ---------------- Title strip ------------------ */
+.title-strip{ 
+    background: #0572CF; ;
+    color: #fff; 
+    display: flex;
+    justify-content: space-between;
+    padding: .4rem 1rem; 
+    align-items: center;
+    margin-top: 1rem; 
+}
+
+
+
+/* ---------------------- review order ------------------- */
+
+.review-order{ 
+    margin-top: 2rem; 
+    padding: .4rem 1rem; 
+}
+
+
+.review-order .order-items-wrapper{ 
+    display: flex;
+    flex-direction: column;
+
+}
+
+
+.review-order .order-items-wrapper .single-review-item{ 
+    display: flex;
+    align-items: center;
+}
+
+
+
+.review-order .order-items-wrapper .single-review-item img { 
+    width: 100px; 
+}
+
+.review-order .order-items-wrapper .single-review-item >div{ 
+    margin-left: 2rem; 
+    display: flex;
+    flex-direction: row;
+}
+
+
+.review-order .order-items-wrapper .single-review-item >div span{ 
+    flex: 0 0 30%; 
+}
+
+
+.review-order .order-items-wrapper .single-review-item >div h2 { 
+    font-size: 20px; 
+    flex: 0 0 70%; 
+    
 }

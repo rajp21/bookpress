@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { addNewAddress, fetchUserAddresses } from '../../http';
+import { notyf } from "../../config";
 import './checkout.css'; 
 
 const Checkout = () => {
@@ -7,6 +8,9 @@ const Checkout = () => {
     const [addAddress, setAdAddress] = useState(false); 
     const [isError, setIsError] = useState(false); 
     const [errorMessages, setErrorMessages] = useState({}); 
+
+
+    const [addressDependancy, setAddressDependancy] = useState(false); 
 
     const [addressData, setAddressData]  = useState({
         recidence: "", 
@@ -43,17 +47,26 @@ const Checkout = () => {
         }
 
         loadAddresses(); 
-    }, []); 
+    }, [addressDependancy]); 
 
 
 
     //  submit new address
     async function submitAddress(e, addressData){
         e.preventDefault(); 
+
         try{ 
             await addNewAddress(addressData); 
+
+            notyf.success("Address Added Succesfully"); 
+            setAdAddress(false);    
+            setAddressDependancy(true); 
         }catch(e){ 
-            setErrorMessages(e.response.data.errorMessages);
+            
+            console.log(e); 
+            if(e.response.status === 422){
+                setErrorMessages(e.response.data.errorMessages);
+            }
         }
     }
 
@@ -89,24 +102,28 @@ const Checkout = () => {
     <section class="billing-section py-5">
         <div class="container">
             <div className='address-area'>
-                <h4 className="section-title">Select Addresses</h4>
+                <div className='title-strip'>
+                    <h4 className="">Select Addresses</h4>
+
+                    <button className='btn btn-danger'>continue</button>
+                </div>
 
                 <div className='address-wrapper'>
                     { 
                         addressLilst.length >0? 
-                        addressLilst.map(() => (
+                        addressLilst.map((address) => (
                             <div className='single-address'>
                         <input type='checkbox'   />
 
                         <div className='address-line'>
-                                <p>Tactus Ventures, Plot No 28, Marol Coperative industrial Eastate Gamdevi, Marol, Andheri East, Mumbai, Maharashtra, 400027</p>
+                                <p>{address.addressString}</p>
                             </div>
                         </div>
                         )): <h4  className='error-message'>Oops, No Address Added, You need to add Adress First</h4>
                     }                   
                 </div>
 
-                <div className='add-address'>
+                <div className='add-address title-strip'>
                     <h4>Add Address</h4>
                     <buton onClick={e => setAdAddress((prev)=> !prev)} className="btn btn-danger"> Add</buton>
                 </div>
@@ -127,7 +144,7 @@ const Checkout = () => {
 
                                     />
                                     {
-                                        errorMessages.recidence?<span className='err-message'>Something is wrong</span>:''
+                                       errorMessages && errorMessages.recidence?<span className='err-message'>{errorMessages.recidence}</span>:''
                                     }
                                 </div>
 
@@ -141,8 +158,8 @@ const Checkout = () => {
 
                                     />
 
-{
-                                        errorMessages?.landmark?<span>Something wrong wrong</span>: ""
+                                    {
+                                       errorMessages && errorMessages.landmark?<span className='err-message'>{errorMessages.landmark}</span>:''
                                     }
                                 </div>
 
@@ -154,6 +171,9 @@ const Checkout = () => {
                                         value={city}
                                         onChange={e => onInpChange(e)}
                                     />
+                                    {
+                                       errorMessages && errorMessages.city?<span className='err-message'>{errorMessages.city}</span>:''
+                                    }
                                 </div>
 
                             <div className='col-md-6 mt-3'>
@@ -165,6 +185,10 @@ const Checkout = () => {
                                     onChange={e => onInpChange(e)}
 
                                 />
+
+                                {
+                                    errorMessages && errorMessages.state?<span className='err-message'>{errorMessages.state}</span>:''
+                                }
                             </div>
 
 
@@ -175,6 +199,10 @@ const Checkout = () => {
                                 value={pincode}
                                     onChange={e => onInpChange(e)}
                                  />
+
+{
+                                       errorMessages && errorMessages.pincode?<span className='err-message'>{errorMessages.pincode}</span>:''
+                                    }
                             </div>
                         </div>
 
@@ -182,11 +210,34 @@ const Checkout = () => {
                             <button type='submit' className='btn btn-primary mt-4 text-center'>Add Address</button>
                         </div>
                    </form>
-                </div>: 
-
-                ""
+                </div>
+                : ""
               }
 
+
+              <div className='title-strip mt-5' style={{marginTop: "1rem"}}>
+                    <h4 className="">Review Order</h4>
+                    <button className='btn btn-danger'>continue</button>
+               </div>
+
+
+               <div className='review-order'>
+                    <div className='order-items-wrapper'>
+                        <div className='single-review-item'>
+                            <img src='https://5.imimg.com/data5/SELLER/Default/2021/8/US/XL/ZL/133456484/atomic-habits-the-life-changing.jpg' alt='image' />
+
+                            <div>
+                                <span>$ 40</span>
+                                <h2>Harry Potter and the Sorcerer's Stone</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className='final-price-section'>
+                        <h2>Total Price</h2>
+                        <span> $200</span>
+                    </div>
+               </div>
             </div>
         </div>
     </section>

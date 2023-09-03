@@ -7,7 +7,6 @@ const userController = {
         let {_id} = req.user; 
         try{    
             const user = await User.findOne({_id: _id}); 
-            console.log(user.addresses); 
             return res.status(200).json({success: true, addresses: user.addresses}); 
         }catch(e){ 
             return next(e); 
@@ -19,7 +18,7 @@ const userController = {
         const {_id} = req.user; 
 
         // validate the request
-        const {error}  = addressSchema.validate(req.body); 
+        const {error}  = addressSchema.validate(req.body, {abortEarly: false}); 
         if(error){ 
             const errorMessages = {};
             error.details.forEach((detail) => {
@@ -52,6 +51,7 @@ const userController = {
         //  adding addresss
 
         let finalAddressString = `${recidence}, ${landmark}, ${city}, ${state}, ${pincode}`; 
+        
         const addressObj = { 
             recidence, 
             landmark, 
@@ -63,7 +63,7 @@ const userController = {
 
         
         try{ 
-            const result = await User.findOne({_id: _id}, {
+            const result = await User.updateOne({_id: _id}, {
                 $push: {addresses: addressObj}
             }); 
                 
